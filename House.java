@@ -7,13 +7,41 @@ public class House extends Building implements HouseRequirements{
   private boolean hasDiningRoom;
   private boolean hasElevator;
 
-  //Constructor
-  public House(String name, String address, int nFloors, boolean hasDR, boolean hasE) {
-    super(name,address,nFloors);
-    System.out.println("You have built a house: 🏠");
-    this.residents = new ArrayList<>();
-    this.hasDiningRoom = hasDR;
-    this.hasElevator = hasE;
+  private ArrayList<Student> newStudents; //a list of freshmen and trasfer students
+  private int yearBuilt; //the year in which the house is built
+  
+    /**
+     * Constructor
+     * @param name the name of the house
+     * @param address the location of the house
+     * @param nFloors the number of floors in the house
+     * @param hasDR whether the house has a dining room
+     * @param hasE whether the house has an elevator
+     */
+    public House(String name, String address, int nFloors, boolean hasDR, boolean hasE) {
+      super(name,address,nFloors);
+      System.out.println("You have built a house: 🏠");
+      this.residents = new ArrayList<>();
+      this.hasDiningRoom = hasDR;
+      this.hasElevator = hasE;
+    }
+  
+    /**
+     * overloaded constructor
+     * @param name the name of the house
+     * @param address the location of the house
+     * @param nFloors the number of floors in the house
+     * @param hasDR whether the house has a dining room
+     * @param hasE whether the house has an elevator
+     * @param yearB the year in which the house was built
+     */
+    public House(String name, String address, int nFloors, boolean hasDR, boolean hasE, int yearB) {
+      super(name,address,nFloors);
+      System.out.println("You have built a house: 🏠");
+      this.residents = new ArrayList<>();
+      this.hasDiningRoom = hasDR;
+      this.hasElevator = hasE;
+      this.yearBuilt = yearB;
   }
 
   /**
@@ -34,9 +62,19 @@ public class House extends Building implements HouseRequirements{
 
   /**
    * add a student to the house
+   * can be overload with collection (arraylist of student)
+   * @param s student moving in
    */
   public void moveIn(Student s) {
     this.residents.add(s);
+  }
+
+  /**
+   * overloaded method for move a list of new students into the house
+   * @param newStudents a list of newcoming freshmen and transfer students to be moved into this house
+   */
+  public void moveIn() {
+    this.residents.addAll(newStudents);
   }
 
   /**
@@ -45,7 +83,9 @@ public class House extends Building implements HouseRequirements{
    * @return the student who moved out
    */
   public Student moveOut(Student s) {// return the Student who moved out
-    this.residents.remove(s);
+    if (!residents.contains(s)) {
+      throw new RuntimeException(s + "is not a resident here!");
+    } this.residents.remove(s);
     return s;
   }
 
@@ -55,10 +95,7 @@ public class House extends Building implements HouseRequirements{
    * @return T/F
    */
   public boolean isResident(Student s) {
-    if (this.residents.contains(s)) {
-      return true;
-    }
-    return false;
+    return this.residents.contains(s);
   }
 
   /**
@@ -75,13 +112,12 @@ public class House extends Building implements HouseRequirements{
   public void goToFloor(int floorNum) {
     if (hasElevator == false) {
       throw new RuntimeException("This house does not have an elevator.");
-    }
-    super.goToFloor(floorNum);
+    } super.goToFloor(floorNum);
   }
 
   public static void main(String[] args) {
-    House Washburn = new House("Washburn", "4 Seelye Drive", 3,false,false);
-    Washburn.showOptions();
-    Washburn.goToFloor(3);
+    House washburn = new House("Washburn", "4 Seelye Drive", 3,false,false);
+    washburn.showOptions();
+    washburn.goToFloor(3);
   }
 }

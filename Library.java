@@ -1,18 +1,54 @@
 /* This is a stub for the Library class */
+import java.util.ArrayList;
 import java.util.Hashtable;
 
 public class Library extends Building implements LibraryRequirements{
 
   //Attributes
   private Hashtable<String, Boolean> collection;
+
+  private boolean hasElevator; //whether the library has an elevator
   
-  //Constructor
+  /**
+   * Constructor
+   * @param name the name of the library
+   * @param address the location of the library
+   * @param nFloors the number of floors in the library
+   */
   public Library(String name, String address, int nFloors) {
     super(name,address,nFloors);
     System.out.println("You have built a library: 📖");
     this.collection = new Hashtable<>();
   }
   
+  /**
+   * overloaded Constructor version 1
+   * @param name the name of the library
+   * @param address the location of the library
+   * @param nFloors the number of floors in the library
+   * @param hasE whether the library has an elevator
+   */
+  public Library(String name, String address, int nFloors, boolean hasE) {
+    super(name,address,nFloors);
+    System.out.println("You have built a library: 📖");
+    this.collection = new Hashtable<>();
+    this.hasElevator = hasE;
+  }
+
+  /**
+   * overloaded Constructor version 1
+   * @param name the name of the library
+   * @param address the location of the library
+   * @param nFloors the number of floors in the library
+   * @param hasE whether the library has an elevator
+   */
+  public Library(String name, String address, int nFloors, boolean hasE) {
+    super(name,address,nFloors);
+    System.out.println("You have built a library: 📖");
+    this.collection = new Hashtable<>();
+    this.hasElevator = hasE;
+  }
+
   /**
    * add a book to the collection
    * @param title title of the book
@@ -27,7 +63,9 @@ public class Library extends Building implements LibraryRequirements{
    * @return title of the book being removed
    */
   public String removeTitle(String title) {
-    this.collection.remove(title,false);
+    if (!collection.containsKey(title)) {
+      throw new RuntimeException (title + "is not in the collection of" + this.name + "library.");
+    } this.collection.remove(title,false);
     return title;
   }
 
@@ -36,19 +74,20 @@ public class Library extends Building implements LibraryRequirements{
    * @param title title of the book needed to be checked out
    */
   public void checkOut(String title) {
-    if (this.collection.containsKey(title) && this.collection.get(title)== true) {
-      removeTitle(title);
-    }
+    if (!this.collection.containsKey(title) || this.collection.get(title) == false) {
+      throw new RuntimeException (title + "is not available in" + this.name + "library.");
+    } removeTitle(title);
   }
+  
 
   /**
    * return a book if it is not available
    * @param title title of the book needed to be returned
    */
   public void returnBook(String title) {
-    if (this.collection.containsKey(title) && this.collection.get(title) == false) {
-      addTitle(title);
-    }
+    if (!this.collection.containsKey(title) && this.collection.get(title) == true) {
+      throw new RuntimeException (title + "is already returned into" + this.name + "library.");
+    } addTitle(title);
   }
 
   /**
@@ -57,10 +96,7 @@ public class Library extends Building implements LibraryRequirements{
    * @return T/F
    */
   public boolean containsTitle(String title) {
-    if (this.collection.containsKey(title)) {
-      return true;
-    }
-    return false;
+    return this.collection.containsKey(title);
   }  
   
   /**
@@ -69,12 +105,9 @@ public class Library extends Building implements LibraryRequirements{
    * @return T/F
    */
   public boolean isAvailable(String title) {
-    if (this.collection.get(title) == true) {
-      return true;
-    }
-    return false;
+    return this.collection.get(title);
   }
-  
+
   /**
    * prints out the entire collection in an easy-to-read way (including checkout status)
    */
@@ -98,9 +131,9 @@ public class Library extends Building implements LibraryRequirements{
   }
 
   public static void main(String[] args) {
-    Library Neilson = new Library("Neilson", "7 Neilson Drive",5);
-    Neilson.showOptions();
-    Neilson.enter();
-    Neilson.goToFloor(4);
+    Library neilson = new Library("Neilson", "7 Neilson Drive",5);
+    neilson.showOptions();
+    neilson.enter();
+    neilson.goToFloor(4);
     }
   }
