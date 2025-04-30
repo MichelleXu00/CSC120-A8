@@ -8,7 +8,7 @@ public class Library extends Building implements LibraryRequirements{
   private Hashtable<String, Boolean> collection;
 
   private boolean hasElevator; //whether the library has an elevator
-  private ArrayList<String> bookList; 
+  private ArrayList<String> bookList;
   
   /**
    * Constructor
